@@ -31,5 +31,5 @@ EOF
 ```
 systemctl restart zabbix-agent
 
-![alt tag](screenshots/element-dannih.png "Элемент заббикс сервера")
+![alt text](screenshots/element-dannih.png "Элемент заббикс сервера")
 
