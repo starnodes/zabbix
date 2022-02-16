@@ -31,5 +31,5 @@ EOF
 ```
 systemctl restart zabbix-agent
 
-![alt text](screenshots/element-dannih.png "Элемент заббикс сервера")
+![Создание элемента данных на заббикс сервере](https://github.com/toxi42/zabbix/raw/main/screenshots/element-dannih.png)
 
