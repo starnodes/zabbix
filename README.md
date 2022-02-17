@@ -9,6 +9,16 @@ or
 
 yum install lm_sensors
 
+sensors-detect
+
+= необходимые действия = На все вопросы отвечаем Y
+
+В конце спросит:
+
+Do you want to add these lines automatically to /etc/modules? (yes/NO)
+
+Отвечаем YES.
+
 ## Варианты мониторинга
 
 Вывод минимального значения температуры
