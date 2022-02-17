@@ -35,10 +35,14 @@ systemctl restart zabbix-agent
 
 ## Теперь создайте новый элемент данных с плавающей точкой у нужного узла
 
-![Создание элемента данных на заббикс сервере](https://github.com/toxi42/zabbix/raw/main/screenshots/element-dannih.png)
+![Создание элемента данных на заббикс сервере](https://github.com/toxi42/zabbix/raw/main/screenshots/data.png)
 
-## Осталось добавить триггер для оповещения
+## Добавим триггер для оповещения
 
-![Создание элемента данных на заббикс сервере](https://github.com/toxi42/zabbix/raw/main/screenshots/trigger.png)
+![Создание триггера на заббикс сервере](https://github.com/toxi42/zabbix/raw/main/screenshots/trigger.png)
+
+## Осталось добавить график
+
+![Создание графика на заббикс сервере](https://github.com/toxi42/zabbix/raw/main/screenshots/chart.png)
 
 ## Готово!
