@@ -3,13 +3,15 @@
 
 Подготовте ваш узел на линукс для мониторинга температуры cpu
 
-apt update && apt install lm-sensors
-
-or
-
-yum install lm_sensors
-
+```sh
+apt update && apt install lm-sensors ИЛИ ДЛЯ CENTOS yum install lm_sensors
 sensors-detect
+= необходимые действия =
+На все вопросы отвечаем Y
+В конце спросит:
+Do you want to add these lines automatically to /etc/modules? (yes/NO)
+Отвечаем YES.
+```
 
 = необходимые действия = На все вопросы отвечаем Y
 
