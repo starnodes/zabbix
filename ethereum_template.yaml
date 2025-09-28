@@ -1,0 +1,174 @@
+zabbix_export:
+  version: '6.0'
+  date: '2025-09-28T21:04:05Z'
+  groups:
+    - uuid: 45073f35a3ca4ad48790c55f724fdc59
+      name: services
+  templates:
+    - uuid: 5bb7e79930cc43f096ff30e468721236
+      template: 'Ethereum node'
+      name: 'Ethereum node'
+      groups:
+        - name: services
+      items:
+        - uuid: 0a3e4cbc940549ac8f53ee07a5e370b8
+          name: 'Beacon Node CL - Syncing Status'
+          type: HTTP_AGENT
+          key: beacon-node.syncing_status
+          delay: 60s
+          history: 30d
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.data.is_syncing
+          url: '{$HOST}:5052/eth/v1/node/syncing'
+          tags:
+            - tag: Ethereum
+              value: Node
+          triggers:
+            - uuid: e118334d07c34b2f924d33b516ceddd2
+              expression: 'last(/Ethereum node/beacon-node.syncing_status)<>"false"'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'count(/Ethereum node/beacon-node.syncing_status,#5,"eq","false")=5'
+              name: 'Consensus Node Not Synced'
+              priority: HIGH
+        - uuid: 06bd5dba6c534ca594ac18788c9ad185
+          name: 'Beacon Node CL - Sync Distance'
+          type: HTTP_AGENT
+          key: beacon-node.sync_distance
+          delay: 60s
+          history: 30d
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.data.sync_distance
+          url: '{$HOST}:5052/eth/v1/node/syncing'
+          tags:
+            - tag: Ethereum
+              value: Node
+        - uuid: 4c1b87ba77424e95bd248548f821c89e
+          name: 'Execution EL - Latest Block Number'
+          type: HTTP_AGENT
+          key: execution-node.latest_block_number
+          delay: 60s
+          history: 30d
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.result
+            - type: LTRIM
+              parameters:
+                - 0x
+            - type: HEX_TO_DECIMAL
+              parameters:
+                - ''
+          url: '{$HOST}:8545'
+          posts: |
+            {
+              "jsonrpc": "2.0",
+              "method": "eth_blockNumber",
+              "params": [],
+              "id": 1
+            }
+          post_type: JSON
+          request_method: POST
+          tags:
+            - tag: Ethereum
+              value: Node
+        - uuid: 67dba3d965114e7cac930f9ee921c094
+          name: 'Execution EL - Peer Count'
+          type: HTTP_AGENT
+          key: execution-node.net_peerCount
+          delay: 60s
+          history: 30d
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.result
+            - type: LTRIM
+              parameters:
+                - 0x
+            - type: HEX_TO_DECIMAL
+              parameters:
+                - ''
+          url: '{$HOST}:8545'
+          posts: |
+            {
+              "jsonrpc":"2.0",
+              "method":"net_peerCount",
+              "params":[],
+              "id":1
+            }
+          post_type: JSON
+          request_method: POST
+          tags:
+            - tag: Ethereum
+              value: Node
+        - uuid: 44a599a170e5451ea0fbf5de82a9c4e2
+          name: 'Execution EL - Network ID'
+          type: HTTP_AGENT
+          key: execution-node.net_version
+          delay: 60s
+          history: 30d
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.result
+          url: '{$HOST}:8545'
+          posts: |
+            {
+              "jsonrpc":"2.0",
+              "method":"net_version",
+              "params":[],
+              "id":1
+            }
+          post_type: JSON
+          request_method: POST
+          tags:
+            - tag: Ethereum
+              value: Node
+        - uuid: 7d585c55c836496c8d43c9c2ebf816ea
+          name: 'Execution EL - Syncing Status'
+          type: HTTP_AGENT
+          key: execution-node.syncing_status
+          delay: 60s
+          history: 30d
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.result
+          url: '{$HOST}:8545'
+          posts: |
+            {
+              "jsonrpc": "2.0",
+              "method": "eth_syncing",
+              "params": [],
+              "id": 1
+            }
+          post_type: JSON
+          request_method: POST
+          tags:
+            - tag: Ethereum
+              value: Node
+          triggers:
+            - uuid: 63defc26825a435a96bc9abb0302f30b
+              expression: 'last(/Ethereum node/execution-node.syncing_status)<>"false"'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'count(/Ethereum node/execution-node.syncing_status,#5,"eq","false")=5'
+              name: 'Execution Node Not Synced'
+              priority: HIGH
+      macros:
+        - macro: '{$HOST}'
+          value: 'http://127.0.0.1'
