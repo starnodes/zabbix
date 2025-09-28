@@ -1,0 +1,104 @@
+zabbix_export:
+  version: '6.0'
+  date: '2025-09-28T20:58:27Z'
+  groups:
+    - uuid: 45073f35a3ca4ad48790c55f724fdc59
+      name: services
+  templates:
+    - uuid: e003774a48e6473c9e56f4ad769ad75e
+      template: 'SSV node'
+      name: 'SSV node'
+      groups:
+        - name: services
+      items:
+        - uuid: ac05b8a00738441ab452cb16915655f0
+          name: 'SSV Node - beacon_node_sync'
+          type: HTTP_AGENT
+          key: ssv-node.beacon_node_sync
+          history: 30d
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.beacon_node
+          url: '{$SSV_HOST}:16000/v1/node/health'
+          tags:
+            - tag: SSV
+              value: Node
+          triggers:
+            - uuid: 8fc5ab2ff93a47a6883b6e21205a4bc7
+              expression: 'last(/SSV node/ssv-node.beacon_node_sync)<>"good"'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'count(/SSV node/ssv-node.beacon_node_sync,#5,"eq","good")=5'
+              name: 'SSV beacon_node_sync BAD'
+              priority: HIGH
+        - uuid: 236c28fb7e6541d9a6edc593e1b353bf
+          name: 'SSV Node - event_syncer'
+          type: HTTP_AGENT
+          key: ssv-node.event_syncer_sync
+          history: 30d
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.event_syncer
+          url: '{$SSV_HOST}:16000/v1/node/health'
+          tags:
+            - tag: SSV
+              value: Node
+          triggers:
+            - uuid: 8d8c4f9b341c4c4daba4e59f50061269
+              expression: 'last(/SSV node/ssv-node.event_syncer_sync)<>"good"'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'count(/SSV node/ssv-node.event_syncer_sync,#5,"eq","good")=5'
+              name: 'SSV event_syncer BAD'
+              priority: HIGH
+        - uuid: 10848ac70a5b443d907bc3f04a8611ce
+          name: 'SSV Node - execution_node_sync'
+          type: HTTP_AGENT
+          key: ssv-node.execution_node_sync
+          history: 30d
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.execution_node
+          url: '{$SSV_HOST}:16000/v1/node/health'
+          tags:
+            - tag: SSV
+              value: Node
+          triggers:
+            - uuid: c95f2f21e3694329a22ae8a6310b606b
+              expression: 'last(/SSV node/ssv-node.execution_node_sync)<>"good"'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'count(/SSV node/ssv-node.execution_node_sync,#5,"eq","good")=5'
+              name: 'SSV execution_node_sync BAD'
+              priority: HIGH
+        - uuid: 98356622337a423295ffc11f6fa7b1c3
+          name: 'SSV Node - p2p'
+          type: HTTP_AGENT
+          key: ssv-node.p2p
+          history: 30d
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - $.p2p
+          url: '{$SSV_HOST}:16000/v1/node/health'
+          tags:
+            - tag: SSV
+              value: Node
+          triggers:
+            - uuid: 62fb7a07e09a465cb93b3543167c249c
+              expression: 'last(/SSV node/ssv-node.p2p)<>"good"'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'count(/SSV node/ssv-node.p2p,#5,"eq","good")=5'
+              name: 'SSV p2p not enough connected peers'
+              priority: WARNING
+      macros:
+        - macro: '{$SSV_HOST}'
+          value: 'http://127.0.0.1'
